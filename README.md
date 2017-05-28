@@ -14,9 +14,9 @@ let target = {
 }
 
 let particle = {
-  pixelsPerSecond = 10,
+  pixelsPerSecond: 10,
   x: 0,
-  y 50
+  y: 50
 }
 
 let cancel = loop(ms => {
