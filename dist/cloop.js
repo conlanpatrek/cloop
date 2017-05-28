@@ -87,8 +87,21 @@ Looper.prototype.removeHandler = function removeHandler (handler) {
   }
 };
 
+var singleton;
+function getInstance() {
+  if (!singleton) {
+    singleton = new Looper();
+  }
+  return singleton
+}
+
+function loop(cb) {
+  return getInstance().addHandler(cb)
+}
+
 exports.Looper = Looper;
 exports.onFrame = onFrame;
+exports.loop = loop;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
