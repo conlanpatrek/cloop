@@ -2,7 +2,6 @@ import { onFrame, now } from './onFrame'
 
 export function Looper () {
   this._handlers = []
-  this._last = now()
   this._now = this._last
   this._hasSetNextFrame = false
   this._cancelNextFrame = null
@@ -13,7 +12,7 @@ export function Looper () {
 
 Looper.prototype.loop = function loop () {
   this._now = now()
-  var delta = this._now - this._last
+  var delta = this._now - (this._last || this._now)
   for (var i = 0; i < this._handlers.length; i++) {
     this._handlers[i](delta)
   }
@@ -42,6 +41,7 @@ Looper.prototype.addHandler = function addHandler (handler) {
 Looper.prototype.removeHandler = function removeHandler (handler) {
   this._handlers = this._handlers.filter(function(h) { return h !== handler })
   if (this._handlers.length === 0) {
+    this._last = null
     this.clearNextFrame()
   }
 }
