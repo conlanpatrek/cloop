@@ -2,13 +2,14 @@
 // MIT license
 var lastTime = 0
 var vendors = ['ms', 'moz', 'webkit', 'o']
-var raf = window.requestAnimationFrame
-var caf = window.cancelAnimationFrame
+var glob = typeof window === 'undefined' ? {} : window
+var raf = glob.requestAnimationFrame
+var caf = glob.cancelAnimationFrame
 
 for (var i = 0; i < vendors.length && (!raf || !caf); i++) {
-  raf = window[vendors[i] + 'RequestAnimationFrame']
-  caf = window[vendors[i] + 'CancelAnimationFrame'] ||
-    window[vendors[i] + 'CancelRequestAnimationFrame']
+  raf = glob[vendors[i] + 'RequestAnimationFrame']
+  caf = glob[vendors[i] + 'CancelAnimationFrame'] ||
+  glob[vendors[i] + 'CancelRequestAnimationFrame']
 }
 
 export var now = Date.now || function () { return new Date().getTime() }
@@ -18,7 +19,7 @@ if (!raf || !caf) {
     var currTime = now()
     var timeToCall = Math.max(0, 16 - (currTime - lastTime))
     lastTime = currTime + timeToCall
-    return window.setTimeout(
+    return glob.setTimeout(
       function() { callback(lastTime) },
       timeToCall
     )
@@ -26,11 +27,16 @@ if (!raf || !caf) {
 
   caf = function(id) { clearTimeout(id) }
 } else {
-  raf = raf.bind(window)
-  caf = caf.bind(window)
+  raf = raf.bind(glob)
+  caf = caf.bind(glob)
 }
 
 export function onFrame (cb) {
   var id = raf(cb)
   return function () { caf(id) }
+}
+
+export async function frame ()
+{
+  return new Promise(onFrame)
 }

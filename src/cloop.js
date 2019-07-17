@@ -1,3 +1,3 @@
-export { Looper } from './Looper'
-export { onFrame } from './onFrame'
-export { loop } from './singleton'
+export * from './Looper'
+export * from './onFrame'
+export * from './singleton'

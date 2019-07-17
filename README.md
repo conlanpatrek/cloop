@@ -19,15 +19,17 @@ let particle = {
   y: 50
 }
 
-let cancel = loop(ms => {
+let cancel = cloop.loop(ms => {
   // Move the particle to the right towards the target
-  particle.x = Math.max(
-    particle.pixelsPerSecond * ms / 1000,
+  particle.x = Math.min(
+    particle.x + particle.pixelsPerSecond * ms / 1000,
     target.x
   )
 
+  console.log(particle.x, particle.y)
   // If the particle has made it to the target, stop looping
   if (particle.x === target.x) {
+    console.log('made it')
     cancel()
   }
 })

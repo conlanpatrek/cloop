@@ -1,9 +1,11 @@
 var resolve = require('rollup-plugin-node-resolve')
 
 export default {
-  entry: 'src/cloop.js',
+  input: 'src/cloop.js',
   plugins: [resolve()],
-  format: 'umd',
-  moduleName: 'cloop',
-  dest: 'dist/cloop.js'
+  output: {
+    file: 'dist/cloop.js',
+    format: 'umd',
+    name: 'cloop'
+  }
 }
