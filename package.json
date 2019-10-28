@@ -1,6 +1,6 @@
 {
   "name": "cloop",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A minimal frame loop library.",
   "main": "dist/cloop.js",
   "module": "src/cloop.js",
@@ -10,7 +10,7 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "jest": "^24.8.0",
     "rollup": "^1.17.0",
     "rollup-plugin-node-resolve": "^5.2.0"
