@@ -30,6 +30,8 @@ Looper.prototype.nextFrame = function nextFrame () {
 
 Looper.prototype.clearNextFrame = function clearNextFrame () {
   this._cancelNextFrame && this._cancelNextFrame()
+  this._cancelNextFrame = null
+  this._hasSetNextFrame = false
 }
 
 Looper.prototype.addHandler = function addHandler (handler) {
