@@ -5,14 +5,18 @@
   "main": "dist/cloop.js",
   "module": "src/cloop.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "parcel build src/cloop.js --global cloop",
     "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "jest": "^24.8.0",
-    "rollup": "^1.17.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+  "dependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "babel-jest": "^26.1.0",
+    "jest": "^26.1.0"
   }
 }

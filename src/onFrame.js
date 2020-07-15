@@ -8,8 +8,7 @@ var caf = glob.cancelAnimationFrame
 
 for (var i = 0; i < vendors.length && (!raf || !caf); i++) {
   raf = glob[vendors[i] + 'RequestAnimationFrame']
-  caf = glob[vendors[i] + 'CancelAnimationFrame'] ||
-  glob[vendors[i] + 'CancelRequestAnimationFrame']
+  caf = glob[vendors[i] + 'CancelAnimationFrame'] || glob[vendors[i] + 'CancelRequestAnimationFrame']
 }
 
 export var now = Date.now || function () { return new Date().getTime() }
@@ -19,13 +18,13 @@ if (!raf || !caf) {
     var currTime = now()
     var timeToCall = Math.max(0, 16 - (currTime - lastTime))
     lastTime = currTime + timeToCall
-    return glob.setTimeout(
-      function() { callback(lastTime) },
+    return setTimeout(
+      function () { callback(lastTime) },
       timeToCall
     )
   }
 
-  caf = function(id) { clearTimeout(id) }
+  caf = function (id) { clearTimeout(id) }
 } else {
   raf = raf.bind(glob)
   caf = caf.bind(glob)
@@ -36,7 +35,6 @@ export function onFrame (cb) {
   return function () { caf(id) }
 }
 
-export async function frame ()
-{
+export async function frame () {
   return new Promise(onFrame)
 }

@@ -1,6 +1,7 @@
 /* eslint-env jest */
 
-let Looper = require('../dist/cloop').Looper
+const Looper = require('../src/cloop').Looper
+jest.useFakeTimers()
 
 describe('Looper', () => {
   let looper
@@ -13,7 +14,6 @@ describe('Looper', () => {
   }
 
   beforeEach(() => {
-    jest.useFakeTimers()
     looper = new Looper()
     looper.loop = jest.fn(looper.loop)
     handler = jest.fn()
@@ -26,7 +26,7 @@ describe('Looper', () => {
     })
 
     it('should return an unsubscribe function', () => {
-      let unsub = looper.addHandler(handler)
+      const unsub = looper.addHandler(handler)
       unsub()
       expect(looper._handlers.length).toBe(0)
     })
