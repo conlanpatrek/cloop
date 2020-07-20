@@ -34,6 +34,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist
+
+      - name: DEBUG
+        run: ls -la
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Add Build"
