@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+const { exec } = require('child_process')
+const version = require('../package.json').version
+
+async function cmd (command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      if (err) reject(err)
+      resolve({ stdout, stderr })
+    })
+  })
+}
+
+async function getVersions () {
+  const { stdout } = await cmd('git --no-pager tag')
+  return stdout.split('\n').filter(v => /^v\d+\.\d+\.\d+$/.test(v)).map(v => v.slice(1).split('.').map(n => parseInt(n)))
+}
+
+function exit (message, code = 0) {
+  const log = code === 0 ? 'log' : 'error'
+  if (message) console[log](message)
+  process.exit(code)
+}
+
+function refuse (maj, min, pat, override = false) {
+  exit(`Refusing to release: Version ${version} ${override ? 'would override' : 'is behind'} tag v${maj}.${min}.${pat}`, 1)
+}
+
+async function accept (maj, min, pat) {
+  const versions = [
+    'latest',
+    `v${maj}`,
+    `v${maj}.${min}`,
+    `v${maj}.${min}.${pat}`
+  ]
+
+  for (const version of versions) {
+    await cmd(`git tag -f ${version}`)
+  }
+
+  exit(`Updated tags: ${versions.join(' ')}`)
+}
+
+async function getLatestVersion () {
+  const versions = await getVersions()
+
+  let maj = 0; let min = 0; let pat = 0
+  for (const [_maj, _min, _pat] of versions) {
+    if (_maj > maj) {
+      maj = _maj
+      min = _min
+      pat = _pat
+    } else if (_min > min) {
+      min = _min
+      pat = _pat
+    } else if (_pat > pat) {
+      pat = _pat
+    }
+  }
+
+  return [maj, min, pat]
+}
+
+async function needsRelease () {
+  if (!/^\d+\.\d+\.\d+$/.test(version)) {
+    exit(`Refusing to release: Version is not valid semver ${version}`, 1)
+  }
+
+  const [maj, min, pat] = await getLatestVersion()
+  const [_maj, _min, _pat] = version.split('.').map(n => parseInt(n))
+
+  if (_maj < maj) refuse(maj, min, pat)
+  if (_maj > maj) await accept(_maj, _min, _pat)
+  if (_min < min) refuse(maj, min, pat)
+  if (_min > min) await accept(_maj, _min, _pat)
+  if (_pat < pat) refuse(maj, min, pat)
+  if (_pat > pat) await accept(_maj, _min, _pat)
+  if (_pat === pat) refuse(maj, min, pat, true)
+  refuse(maj, min, pat)
+}
+
+needsRelease()

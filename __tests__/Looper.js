@@ -1,6 +1,8 @@
 /* eslint-env jest */
 
-const Looper = require('../src/cloop').Looper
+const MODULE_DIR = process.env.MODULE_DIR || 'src'
+const cloop = require(`../${MODULE_DIR}/cloop`)
+const Looper = cloop.Looper
 jest.useFakeTimers()
 
 describe('Looper', () => {
