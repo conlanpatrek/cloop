@@ -48,4 +48,4 @@ jobs:
         run: ./tasks/release
       
       - name: Push Tags
-        run: git push --tags
+        run: git push -f --tags
