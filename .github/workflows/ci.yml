@@ -42,11 +42,10 @@ jobs:
           git config --global user.name "Release Bot"
       
       - name: Commit dist
-        run: git add -f ./dist && git commit -m "Add Build"
+        run: git add -f ./dist && git commit -m "Release"
       
       - name: Tag Release
         run: ./tasks/release
       
       - name: Push Tags
-        if: success()
         run: git push --tags
