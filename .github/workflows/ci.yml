@@ -48,8 +48,6 @@ jobs:
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
       
-      - name: Tag Release
-        run: ./tasks/release
-      
-      - name: Push Tags
-        run: git push -f --tags
+      - name: Release
+        run: ./tasks/release && git push -f --tags || echo "Done"
+
