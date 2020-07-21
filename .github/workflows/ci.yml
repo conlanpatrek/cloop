@@ -44,7 +44,7 @@ jobs:
         run: |
           git config --global user.email "release@conlanpatrek.com"
           git config --global user.name "Release Bot"
-          git config --global url."https://github.com/".insteadOf git@github.com:
+          git config --global credential.username "${{ secrets.PUBLISH_USERNAME }}"
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
