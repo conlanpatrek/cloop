@@ -37,6 +37,8 @@ jobs:
         with:
           name: dist
           path: dist/
+
+      - run: git config --global user.name "Release Bot"
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
