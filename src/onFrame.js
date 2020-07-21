@@ -1,40 +1,47 @@
 // Adapted from the Paul Irish gist at https://gist.github.com/paulirish/1579671
 // MIT license
-var lastTime = 0
-var vendors = ['ms', 'moz', 'webkit', 'o']
-var glob = typeof window === 'undefined' ? {} : window
-var raf = glob.requestAnimationFrame
-var caf = glob.cancelAnimationFrame
+const VENDORS = ['ms', 'moz', 'webkit', 'o']
+const glob = typeof window === 'undefined' ? {} : window
+let raf = glob.requestAnimationFrame
+let caf = glob.cancelAnimationFrame
+let lastTime = 0
 
-for (var i = 0; i < vendors.length && (!raf || !caf); i++) {
-  raf = glob[vendors[i] + 'RequestAnimationFrame']
-  caf = glob[vendors[i] + 'CancelAnimationFrame'] || glob[vendors[i] + 'CancelRequestAnimationFrame']
-}
-
-export var now = Date.now || function () { return new Date().getTime() }
-
+// Try looping through vendors
 if (!raf || !caf) {
-  raf = function (callback) {
-    var currTime = now()
-    var timeToCall = Math.max(0, 16 - (currTime - lastTime))
-    lastTime = currTime + timeToCall
-    return setTimeout(
-      function () { callback(lastTime) },
-      timeToCall
-    )
+  for (const vendor of VENDORS) {
+    raf = glob[`${vendor}RequestAnimationFrame`]
+    caf = glob[`${vendor}CancelAnimationFrame`] || glob[`${vendor}CancelRequestAnimationFrame`]
   }
-
-  caf = function (id) { clearTimeout(id) }
-} else {
-  raf = raf.bind(glob)
-  caf = caf.bind(glob)
 }
 
+// Create setTimeout fallback
+if (!raf || !caf) {
+  raf = (callback) => {
+    const currTime = Date.now()
+    const timeToCall = Math.max(0, 16 - (currTime - lastTime))
+    lastTime = currTime + timeToCall
+    return setTimeout(() => callback(lastTime), timeToCall)
+  }
+  caf = id => clearTimeout(id)
+}
+
+/**
+ * Wait a frame, then call the provided callback.
+ *
+ * @param {Function} cb
+ *
+ * @returns {Function} Function that cancels the frame.
+ */
 export function onFrame (cb) {
-  var id = raf(cb)
-  return function () { caf(id) }
+  const id = raf(cb)
+  return () => caf(id)
 }
 
+/**
+ * Awaitable frame.
+ *
+ * @returns {Promise}
+ */
 export async function frame () {
   return new Promise(onFrame)
 }
