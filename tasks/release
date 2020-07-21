@@ -35,6 +35,7 @@ async function accept (maj, min, pat) {
   ]
 
   for (const version of versions) {
+    await cmd(`git push origin :${version}`)
     await cmd(`git tag -f ${version}`)
   }
 
