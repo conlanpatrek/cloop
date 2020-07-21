@@ -39,6 +39,12 @@ jobs:
         with:
           name: dist
           path: dist/
+
+      - name: Add git auth
+        run: |
+          git config --global user.email "release@conlanpatrek.com"
+          git config --global user.name "Release Bot"
+          git config --global url."https://github.com/".insteadOf git@github.com:
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
