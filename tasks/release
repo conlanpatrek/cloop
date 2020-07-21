@@ -2,6 +2,13 @@
 const { exec } = require('child_process')
 const version = require('../package.json').version
 
+/**
+ * Execute a command and await the output
+ *
+ * @param {String} command
+ *
+ * @returns {Promise<Object>}
+ */
 async function cmd (command) {
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
@@ -13,37 +20,21 @@ async function cmd (command) {
   })
 }
 
+/**
+ * Get (and parse) all semver tags
+ *
+ * @returns {Number[][]} An array of [major, minor, patch] members
+ */
 async function getVersions () {
   const { stdout } = await cmd('git --no-pager tag')
   return stdout.split('\n').filter(v => /^v\d+\.\d+\.\d+$/.test(v)).map(v => v.slice(1).split('.').map(n => parseInt(n)))
 }
 
-function exit (message, code = 0) {
-  const log = code === 0 ? 'log' : 'error'
-  if (message) console[log](message)
-  process.exit(code)
-}
-
-function refuse (maj, min, pat, override = false) {
-  exit(`Refusing to release: Version ${version} ${override ? 'would override' : 'is behind'} tag v${maj}.${min}.${pat}`, 1)
-}
-
-async function accept (maj, min, pat) {
-  const versions = [
-    `v${maj}.${min}.${pat}`,
-    `v${maj}.${min}`,
-    `v${maj}`,
-    'latest'
-  ]
-
-  for (const version of versions) {
-    await cmd(`git push origin :${version}`)
-    await cmd(`git tag -f ${version}`)
-  }
-
-  exit(`Updated tags: ${versions.join(' ')}`)
-}
-
+/**
+ * Loop through all of the versions I know about, and snag the latest one.
+ *
+ * @returns {Number[]} An array of [major, minor, patch]
+ */
 async function getLatestVersion () {
   const versions = await getVersions()
 
@@ -64,7 +55,61 @@ async function getLatestVersion () {
   return [maj, min, pat]
 }
 
-async function needsRelease () {
+/**
+ * Kill the process with a code and a message
+ *
+ * @param {String} message
+ * @param {Number} code
+ */
+function exit (message, code = 0) {
+  const log = code === 0 ? 'log' : 'error'
+  if (message) console[log](message)
+  process.exit(code)
+}
+
+/**
+ * Exit with a message about how the current version is too low / equivalent to
+ * the latest version.
+ *
+ * @param {Number} maj Semver Major
+ * @param {Number} min Semver Minor
+ * @param {Number} pat Semver Patch
+ * @param {Boolean} areEqual Whether or not the version is equal to the latest version
+ */
+function refuse (maj, min, pat, areEqual = false) {
+  exit(`Refusing to release: Version ${version} ${areEqual ? 'would override' : 'is behind'} tag v${maj}.${min}.${pat}`, 1)
+}
+
+/**
+ * Turn the major minor patch semver into several git tags, then exit with a success message.
+ *
+ * @param {Number} maj Semver Major
+ * @param {Number} min Semver Minor
+ * @param {Number} pat Semver Patch
+ */
+async function accept (maj, min, pat) {
+  const versions = [
+    `v${maj}.${min}.${pat}`,
+    `v${maj}.${min}`,
+    `v${maj}`,
+    'latest'
+  ]
+
+  for (const version of versions) {
+    await cmd(`git push origin :${version}`)
+    await cmd(`git tag -f ${version}`)
+  }
+
+  exit(`Updated tags: ${versions.join(' ')}`)
+}
+
+/**
+ * Run the release task.
+ *
+ * Etermines if a release should happen, and then
+ * executes it.
+ */
+async function release () {
   if (!/^\d+\.\d+\.\d+$/.test(version)) {
     exit(`Refusing to release: Version is not valid semver ${version}`, 1)
   }
@@ -78,8 +123,8 @@ async function needsRelease () {
   if (_min > min) await accept(_maj, _min, _pat)
   if (_pat < pat) refuse(maj, min, pat)
   if (_pat > pat) await accept(_maj, _min, _pat)
-  if (_pat === pat) refuse(maj, min, pat, true)
-  refuse(maj, min, pat)
+  if (_pat < pat) refuse(maj, min, pat)
+  refuse(maj, min, pat, true)
 }
 
-needsRelease()
+release()
