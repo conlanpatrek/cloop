@@ -1,6 +1,6 @@
 {
   "name": "cloop",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A minimal frame loop library.",
   "main": "dist/cloop.js",
   "module": "src/cloop.js",
