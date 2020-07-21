@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token:${{ secrets.PUBLISH_TOKEN }}
+          token: ${{ secrets.PUBLISH_TOKEN }}
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
