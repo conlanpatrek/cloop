@@ -45,7 +45,7 @@ jobs:
           git config --global user.email "release@conlanpatrek.com"
           git config --global user.name "Release Bot"
           git config --global credential.username "${{ secrets.PUBLISH_USERNAME }}"
-          git config --global credential.username "${{ secrets.PUBLISH_TOKEN }}"
+          git config --global credential.password "${{ secrets.PUBLISH_TOKEN }}"
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
