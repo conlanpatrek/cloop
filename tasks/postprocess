@@ -9,10 +9,8 @@ const BUNDLE_PATH = path.join(__dirname, '..', 'dist', 'cloop.js')
 const bundle = fs.readFileSync(BUNDLE_PATH, 'utf-8')
 
 // Replace global refs with an isomorphic version
-const processed = bundle.replace(
-  /([^.])parcelRequire/g,
-  '$1(typeof window === \'undefined\' ? global : window).parcelRequire'
-)
+const isomorphicGlobal = 'var ↂ=(typeof window === \'undefined\' ? global : window);'
+const processed = bundle.replace(/parcelRequire/g, 'ↂ.parcelRequire')
 
 // Write bundle
-fs.writeFileSync(BUNDLE_PATH, processed)
+fs.writeFileSync(BUNDLE_PATH, isomorphicGlobal + processed)

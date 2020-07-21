@@ -5,7 +5,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
 
       - name: Install Deps
         run: yarn install
@@ -27,11 +27,11 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+      - uses: actions/checkout@v1
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
@@ -43,20 +43,12 @@ jobs:
         run: |
           git config --global user.email "release@conlanpatrek.com"
           git config --global user.name "Release Bot"
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       
       - name: Tag Release
         run: ./tasks/release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       
       - name: Push Tags
         run: git push -f --tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
