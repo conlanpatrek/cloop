@@ -30,6 +30,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
