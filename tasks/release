@@ -26,6 +26,7 @@ async function cmd (command) {
  * @returns {Number[][]} An array of [major, minor, patch] members
  */
 async function getVersions () {
+  await cmd('get fetch --tags')
   const { stdout } = await cmd('git --no-pager tag')
   return stdout.split('\n').filter(v => /^v\d+\.\d+\.\d+$/.test(v)).map(v => v.slice(1).split('.').map(n => parseInt(n)))
 }

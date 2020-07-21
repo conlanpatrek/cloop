@@ -49,3 +49,5 @@ jobs:
 
       - name: Release
         run: ./tasks/release && git push -f --tags || echo "Done"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
