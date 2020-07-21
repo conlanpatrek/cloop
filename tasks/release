@@ -6,6 +6,8 @@ async function cmd (command) {
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       if (err) reject(err)
+      console.log(stdout)
+      console.error(stderr)
       resolve({ stdout, stderr })
     })
   })
@@ -28,10 +30,10 @@ function refuse (maj, min, pat, override = false) {
 
 async function accept (maj, min, pat) {
   const versions = [
-    'latest',
-    `v${maj}`,
+    `v${maj}.${min}.${pat}`,
     `v${maj}.${min}`,
-    `v${maj}.${min}.${pat}`
+    `v${maj}`,
+    'latest'
   ]
 
   for (const version of versions) {
