@@ -41,7 +41,7 @@ jobs:
           path: dist/
 
       - name: Add git auth
-        run: git config --global user.name "${{ secrets.PUBLISH_TOKEN }}"
+        run: git config --global user.name "${{ secrets.PUBLISH_USERNAME }}"
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
