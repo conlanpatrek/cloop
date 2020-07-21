@@ -37,16 +37,9 @@ jobs:
         with:
           name: dist
           path: dist/
-
-      - run: git config --global user.name "Release Bot"
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       
       - name: Release
         run: ./tasks/release && git push -f --tags || echo "Done"
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-
