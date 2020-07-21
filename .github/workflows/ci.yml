@@ -28,8 +28,6 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     continue-on-error: true
-    env:
-      GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v1
@@ -42,6 +40,8 @@ jobs:
       
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       
       - name: Release
         run: ./tasks/release && git push -f --tags || echo "Done"
