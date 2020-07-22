@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install Deps
-        cmd: yarn install
+        run: yarn install
 
       - name: Download Build
         uses: actions/download-artifact@v2
