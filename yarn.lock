@@ -2,6 +2,21 @@
 # yarn lockfile v1
 
 
+"@archatomic/command-js@archatomic/command-js":
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/archatomic/command-js.git#6999198e038458ac1218fd610494c6f289e4434f"
+
+"@archatomic/package-json@archatomic/package-json":
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/archatomic/package-json.git#8a5a438d26945a3a1587c362c0230caecf42ef94"
+
+"@archatomic/release@archatomic/release":
+  version "1.0.0"
+  resolved "git+ssh://git@github.com/archatomic/release.git#00127a2c489c623cd34b1fcefaf75a90801eafa1"
+  dependencies:
+    "@archatomic/command-js" archatomic/command-js
+    "@archatomic/package-json" archatomic/package-json
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"

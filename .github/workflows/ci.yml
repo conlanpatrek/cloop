@@ -48,6 +48,6 @@ jobs:
         run: git add -f ./dist && git commit -m "Release"
 
       - name: Release
-        run: ./tasks/release && git push -f --tags || echo "Done"
+        run: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
