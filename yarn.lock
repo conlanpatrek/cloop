@@ -2,20 +2,23 @@
 # yarn lockfile v1
 
 
-"@archatomic/command-js@archatomic/command-js":
+"@archatomic/command-js@^1.0.0":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/archatomic/command-js.git#6999198e038458ac1218fd610494c6f289e4434f"
+  resolved "https://npm.pkg.github.com/download/@archatomic/command-js/1.0.0/02e1d40b81160abe4c3a2c0804640c44323eb7fdea5811cfd68c5123f58a8aac#354d752ae829b2aced7a59907eb80564772ac86b"
+  integrity sha512-6JirPz7Y9ZFAayYPqUm9SiNjGfW4LBtfx2hUefAj6S8PlwTtsTvVrzJWlUwuqviMRoyxT7Wx/O2P2aJSIU62zg==
 
-"@archatomic/package-json@archatomic/package-json":
+"@archatomic/package-json@^1.0.0":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/archatomic/package-json.git#8a5a438d26945a3a1587c362c0230caecf42ef94"
+  resolved "https://npm.pkg.github.com/download/@archatomic/package-json/1.0.0/ab593bf6c50e95d46125d41518020472e14790db39b74854d19df9d10a4682f4#1ab892e4b7c3bc5789c3aca84b851efbeeaeb37e"
+  integrity sha512-fTvOlpjIgUTHdEs4BuT/Mk/D7uKKsP1PMV1dfTcmjUIz9F0h5PGMs8+J3Ff4qUrQHXKVLUcUyXBpTBFVNI7syA==
 
-"@archatomic/release@archatomic/release":
-  version "1.0.0"
-  resolved "git+ssh://git@github.com/archatomic/release.git#00127a2c489c623cd34b1fcefaf75a90801eafa1"
+"@archatomic/release@^1.0.1":
+  version "1.0.1"
+  resolved "https://npm.pkg.github.com/download/@archatomic/release/1.0.1/d10e8805f76e3203306444fad6825033f88191ef9b73b0df8ea1b15ef3536729#6bc35830fe24899c75d044e12e104bfc7da047a0"
+  integrity sha512-mM7QNbYeEMRyL1Xw75rlwq8vo4QtznxQZAnNPnnBlhDnyoSpDJ6U9jg6wGETmECLDuFbglHRQbabaIpzlaf6TQ==
   dependencies:
-    "@archatomic/command-js" archatomic/command-js
-    "@archatomic/package-json" archatomic/package-json
+    "@archatomic/command-js" "^1.0.0"
+    "@archatomic/package-json" "^1.0.0"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"

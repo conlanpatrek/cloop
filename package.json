@@ -2,6 +2,9 @@
   "name": "cloop",
   "version": "1.0.0",
   "description": "A minimal frame loop library.",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "main": "dist/cloop.js",
   "module": "src/cloop.js",
   "scripts": {
@@ -11,10 +14,11 @@
   "jest": {
     "testEnvironment": "node"
   },
+  "private": true,
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@archatomic/release": "archatomic/release",
+    "@archatomic/release": "^1.0.1",
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "babel-jest": "^26.1.0",

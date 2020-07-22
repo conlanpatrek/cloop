@@ -5,10 +5,8 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - name: Git Config
-        run: |
-          git config --global user.name "Release Bot"
-          git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf ssh://git@github.com
+      - name: NPM Config
+        run: echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.PUBLISH_TOKEN }}" >> ./.npmrc
 
       - uses: actions/checkout@v2
 
@@ -51,4 +49,4 @@ jobs:
         run: git add -f ./dist && git commit -m "Release"
 
       - name: Release
-        run: yarn release
+        run: yarn release && yarn publish --non-interactive
