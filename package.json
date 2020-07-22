@@ -1,6 +1,6 @@
 {
   "name": "cloop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A minimal frame loop library.",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
