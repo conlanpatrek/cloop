@@ -5,6 +5,11 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
+      - name: Git Config
+        run: |
+          git config --global user.name "Release Bot"
+          git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf ssh://git@github.com/
+
       - uses: actions/checkout@v2
 
       - name: Install Deps
@@ -27,27 +32,23 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
 
     steps:
+      - name: Git Config
+        run: |
+          git config --global user.name "Release Bot"
+          git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf ssh://git@github.com/
+
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PUBLISH_TOKEN }}
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: dist
           path: dist/
-      
-      - name: Git Auth
-        run: git config --global user.name "Release Bot"
 
       - name: Commit dist
         run: git add -f ./dist && git commit -m "Release"
 
       - name: Release
         run: yarn release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
