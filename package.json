@@ -1,5 +1,5 @@
 {
-  "name": "cloop",
+  "name": "@conlanpatrek/cloop",
   "version": "1.0.2",
   "description": "A minimal frame loop library.",
   "publishConfig": {
