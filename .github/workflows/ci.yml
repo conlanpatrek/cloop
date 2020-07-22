@@ -9,11 +9,12 @@ jobs:
         run: |
           git config --global user.name "Release Bot"
           git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf ssh://git@github.com
+          git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf https://github.com
 
       - uses: actions/checkout@v2
 
       - name: Install Deps
-        run: npm install
+        run: yarn install
   
       - name: Build
         run: yarn build
@@ -38,6 +39,7 @@ jobs:
         run: |
           git config --global user.name "Release Bot"
           git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf ssh://git@github.com
+          git config --global url."https://${{ secrets.PUBLISH_TOKEN }}@github.com".insteadOf https://github.com
 
       - uses: actions/checkout@v2
 
